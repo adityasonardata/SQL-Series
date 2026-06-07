@@ -1,1 +1,91 @@
+Working with SQL Built-in Functions
 
+> 📺 Watch this episode: [YouTube Link]
+---
+
+## 📌 What You Will Learn
+
+- String functions — UPPER, LOWER, LENGTH, CONCAT, TRIM, SUBSTRING, REPLACE, LEFT, RIGHT, LPAD
+- Date functions — NOW, CURDATE, YEAR, MONTH, DAY, EXTRACT, DATE_FORMAT
+- DATEDIFF — days between two dates
+- DATE_ADD & DATE_SUB — add or subtract time
+- TIMESTAMPDIFF — difference in any unit
+- Combining string and date functions in real queries
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| 1 | `ep06_string_functions.sql` | UPPER, LOWER, LENGTH, CONCAT, TRIM, SUBSTRING, REPLACE, LEFT, RIGHT, LPAD |
+| 2 | `ep06_date_time_functions.sql` | NOW, CURDATE, YEAR, MONTH, EXTRACT, DATE_FORMAT, DATEDIFF, DATE_ADD, TIMESTAMPDIFF |
+
+---
+
+## 📝 Quick Reference
+
+### String Functions
+
+| Function | What It Does | Example |
+|---|---|---|
+| `UPPER(str)` | Convert to uppercase | `UPPER('rahul')` → `RAHUL` |
+| `LOWER(str)` | Convert to lowercase | `LOWER('RAHUL')` → `rahul` |
+| `LENGTH(str)` | Count characters | `LENGTH('Rahul')` → `5` |
+| `CONCAT(a,b)` | Join strings | `CONCAT('Rahul',' ','Sharma')` → `Rahul Sharma` |
+| `CONCAT_WS(sep,a,b)` | Join with separator | `CONCAT_WS(' ','Rahul','Sharma')` → `Rahul Sharma` |
+| `TRIM(str)` | Remove spaces both sides | `TRIM(' Rahul ')` → `Rahul` |
+| `SUBSTRING(str,pos,len)` | Extract part of string | `SUBSTRING('Rahul',1,3)` → `Rah` |
+| `REPLACE(str,from,to)` | Swap text | `REPLACE('gmail','gmail','yahoo')` |
+| `LEFT(str,n)` | First n characters | `LEFT('Rahul',3)` → `Rah` |
+| `RIGHT(str,n)` | Last n characters | `RIGHT('Rahul',3)` → `hul` |
+| `LPAD(str,len,pad)` | Pad from left | `LPAD(7,6,'0')` → `000007` |
+| `LOCATE(sub,str)` | Find position | `LOCATE('@','r@g.com')` → `2` |
+
+---
+
+### Date & Time Functions
+
+| Function | What It Does | Example Output |
+|---|---|---|
+| `NOW()` | Current date + time | `2024-04-30 14:35:22` |
+| `CURDATE()` | Current date only | `2024-04-30` |
+| `YEAR(date)` | Extract year | `2024` |
+| `MONTH(date)` | Extract month number | `4` |
+| `MONTHNAME(date)` | Extract month name | `April` |
+| `DAY(date)` | Extract day | `30` |
+| `DAYNAME(date)` | Extract day name | `Tuesday` |
+| `EXTRACT(part FROM date)` | Extract any part | `EXTRACT(QUARTER FROM date)` |
+| `DATE_FORMAT(date, fmt)` | Format for display | `05 January 2024` |
+| `DATEDIFF(end, start)` | Days between dates | `120` |
+| `DATE_ADD(date, INTERVAL n unit)` | Add to date | `2024-02-04` |
+| `DATE_SUB(date, INTERVAL n unit)` | Subtract from date | `2024-01-24` |
+| `TIMESTAMPDIFF(unit, start, end)` | Diff in any unit | months, years, days |
+
+---
+
+### DATE_FORMAT Codes
+
+| Code | Meaning | Example |
+|---|---|---|
+| `%Y` | 4-digit year | `2024` |
+| `%y` | 2-digit year | `24` |
+| `%M` | Full month name | `January` |
+| `%b` | Short month name | `Jan` |
+| `%m` | Month number | `01` |
+| `%d` | Day number | `05` |
+| `%D` | Day with suffix | `5th` |
+| `%W` | Weekday name | `Monday` |
+
+---
+
+## ⚠️ Things to Remember
+
+| Mistake | Fix |
+|---|---|
+| SUBSTRING position starts at 0 | It starts at 1 in MySQL |
+| DATEDIFF order matters | `DATEDIFF(end, start)` — end first |
+| DATE_ADD syntax | `INTERVAL 30 DAY` not `30 DAYS` |
+| Using functions in WHERE slows queries | Index won't be used on function-wrapped columns |
+
+---
