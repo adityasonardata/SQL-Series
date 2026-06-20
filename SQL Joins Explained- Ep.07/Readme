@@ -1,0 +1,90 @@
+# Ep.07 — SQL Joins Explained (Theory + Basics)
+
+> 📺 Watch this episode: [YouTube Link]
+---
+
+## 📌 What You Will Learn
+
+- What a JOIN is and why relational databases need it
+- The 4 types of JOINs — INNER, LEFT, RIGHT, FULL OUTER
+- Venn diagram logic for each join type
+- INNER JOIN — only matching rows from both tables
+- LEFT JOIN — all rows from left + matches from right
+- RIGHT JOIN — all rows from right + matches from left
+- FULL OUTER JOIN — everything from both sides (MySQL workaround)
+- Finding unmatched records using NULL trick
+- Most common JOIN mistakes beginners make
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| — | `ep07_sql_joins_explained.pptx` | 9-slide presentation — theory, Venn diagrams, syntax, mistakes |
+| 1 | `ep07_inner_join.sql` | INNER JOIN basics, 3-table join, with WHERE and GROUP BY |
+| 2 | `ep07_left_right_join.sql` | LEFT JOIN, NULL trick, RIGHT JOIN, INNER vs LEFT comparison |
+| 3 | `ep07_full_outer_join.sql` | FULL OUTER workaround, UNION vs UNION ALL, unmatched records |
+
+> ✅ Watch the PPT section first, then follow along with SQL files
+
+---
+
+## 📝 Quick Reference
+
+### JOIN Syntax
+
+```sql
+SELECT   columns
+FROM     table1 t1
+JOIN_TYPE table2 t2
+    ON t1.key = t2.key
+WHERE    condition
+ORDER BY column;
+```
+
+### JOIN Types Cheat Sheet
+
+| JOIN Type | Returns | NULLs | Use When |
+|---|---|---|---|
+| `INNER JOIN` | Matching rows only | No NULLs | Only want records in both tables |
+| `LEFT JOIN` | All LEFT + matching RIGHT | Right side NULLs | Keep all records from main table |
+| `RIGHT JOIN` | All RIGHT + matching LEFT | Left side NULLs | Keep all records from second table |
+| `FULL OUTER` | Everything from both | Both sides NULLs | See all unmatched records |
+
+---
+
+### NULL Trick — Find Unmatched Records
+
+```sql
+-- Customers with NO orders
+SELECT c.first_name
+FROM   customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE  o.order_id IS NULL;
+```
+
+---
+
+### MySQL FULL OUTER Workaround
+
+```sql
+SELECT columns FROM t1 LEFT JOIN t2  ON t1.id = t2.id
+UNION
+SELECT columns FROM t1 RIGHT JOIN t2 ON t1.id = t2.id;
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+| Mistake | Problem | Fix |
+|---|---|---|
+| Forgetting ON clause | MySQL does a CROSS JOIN | Always write `ON t1.key = t2.key` |
+| Ambiguous column names | MySQL error on shared column names | Prefix with alias: `c.customer_id` |
+| WHERE instead of ON | Changes LEFT JOIN behaviour | Join condition goes in ON, filters go in WHERE |
+| UNION ALL for FULL OUTER | Duplicate matched rows | Use UNION not UNION ALL |
+
+---
+
+
