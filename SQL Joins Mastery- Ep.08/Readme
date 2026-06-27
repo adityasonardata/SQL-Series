@@ -1,0 +1,131 @@
+# Ep.08 — SQL Joins Mastery
+
+> 📺 Watch this episode: [YouTube Link]
+
+## 📌 What You Will Learn
+
+- Multi-table JOINs — joining 3 tables in one query
+- JOIN + WHERE, GROUP BY, HAVING combined
+- SELF JOIN — a table joined with itself
+- Employee manager hierarchy using SELF JOIN
+- UNION — combine queries, remove duplicates
+- UNION ALL — combine queries, keep duplicates
+- COALESCE — replace NULL with a default value
+- 8 real interview-level JOIN queries
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| — | `ep08_sql_joins_mastery.pptx` | 6-slide deck — multi-table, SELF JOIN, UNION, interview questions |
+| 1 | `ep08_multi_table_join.sql` | 3-table JOIN, with WHERE, GROUP BY, HAVING |
+| 2 | `ep08_self_join.sql` | Employee hierarchy, COALESCE, customer city pairs |
+| 3 | `ep08_union_union_all.sql` | UNION, UNION ALL, FULL OUTER workaround, ORDER BY at end |
+| 4 | `ep08_interview_queries.sql` | 8 real interview questions with approach comments |
+
+> ✅ Watch PPT section first, then follow along with SQL files
+
+---
+
+## 📝 Quick Reference
+
+### Multi-Table JOIN
+
+```sql
+SELECT   c.first_name, p.product_name, o.quantity
+FROM     customers c
+INNER JOIN orders   o ON c.customer_id = o.customer_id
+INNER JOIN products p ON o.product_id  = p.product_id;
+```
+
+**Rules:**
+- Alias every table — `customers c`, `orders o`, `products p`
+- Prefix every column — `c.first_name` not `first_name`
+- Chain JOINs in logical order — follow the data flow
+
+---
+
+### SELF JOIN
+
+```sql
+SELECT e.name AS employee, m.name AS manager
+FROM   employees e
+LEFT JOIN employees m ON e.manager_id = m.emp_id;
+```
+
+- Same table used twice with two different aliases
+- Use LEFT JOIN so top-level rows (no manager) still appear
+- Use COALESCE to replace NULL with readable text
+
+---
+
+### UNION vs UNION ALL
+
+| | UNION | UNION ALL |
+|---|---|---|
+| Duplicates | Removed | Kept |
+| Speed | Slower | Faster |
+| Use when | Results may overlap | Results won't overlap |
+
+```sql
+SELECT col FROM table1
+UNION
+SELECT col FROM table2
+ORDER BY col;   -- ORDER BY goes at the very end
+```
+
+---
+
+### NULL Trick — Find Unmatched Records
+
+```sql
+-- Customers with no orders
+SELECT c.first_name
+FROM   customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE  o.order_id IS NULL;
+```
+
+---
+
+### COALESCE — Replace NULL
+
+```sql
+-- Show 0 instead of NULL for customers with no orders
+SELECT c.first_name, COALESCE(SUM(o.quantity), 0) AS total
+FROM   customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.first_name;
+```
+
+---
+
+## 🎯 Interview Questions Covered
+
+| # | Question | Technique |
+|---|---|---|
+| Q1 | Customers who never placed an order | LEFT JOIN + IS NULL |
+| Q2 | Top 5 products by total quantity sold | INNER JOIN + GROUP BY + LIMIT |
+| Q3 | Each customer's total orders and items (including 0) | LEFT JOIN + COALESCE |
+| Q4 | Products that have never been ordered | LEFT JOIN + IS NULL |
+| Q5 | Each customer's most recent order date | INNER JOIN + MAX + GROUP BY |
+| Q6 | Which city generates the most orders | INNER JOIN + GROUP BY |
+| Q7 | Electronics orders from Mumbai customers | 3-table JOIN + WHERE |
+| Q8 | Category revenue with more than 2 orders | 3-table JOIN + HAVING |
+
+---
+
+## ⚠️ Common Mistakes
+
+| Mistake | Fix |
+|---|---|
+| INNER JOIN for SELF JOIN hierarchy | Use LEFT JOIN — top level has no manager |
+| UNION ALL when expecting unique rows | Use UNION to deduplicate |
+| ORDER BY inside individual UNION query | Put ORDER BY at the very end |
+| Forgetting COALESCE on LEFT JOIN aggregates | NULL SUM → use COALESCE(SUM(), 0) |
+| Not aliasing in multi-table JOINs | Always alias — ambiguity errors follow |
+
+
+➡️ [Go to Ep.09 →](../ep09_subqueries/)
