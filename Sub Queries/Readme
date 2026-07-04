@@ -1,0 +1,83 @@
+# Ep.09 — Deep Dive into Subqueries
+
+> 📺 Watch this episode: [YouTube Link]
+
+---
+
+## 📌 What You Will Learn
+
+- What a subquery is and how it executes
+- Subquery in WHERE — filter rows using a subquery result
+- Subquery in SELECT — scalar subquery per row
+- Subquery in FROM — derived tables
+- Subquery in HAVING — filter groups
+- IN vs NOT IN — and the NULL trap to avoid
+- EXISTS vs NOT EXISTS — faster alternative
+- Correlated subqueries — runs once per row
+- When to use subquery vs JOIN
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| — | `ep09_subqueries.pptx` | 6-slide deck — concept, locations, IN vs EXISTS, correlated |
+| 1 | `ep09_subquery_basics.sql` | WHERE, SELECT, FROM, HAVING subqueries |
+| 2 | `ep09_in_exists_operators.sql` | IN, NOT IN, EXISTS, NOT EXISTS with NULL trap warning |
+| 3 | `ep09_correlated_subqueries.sql` | Per-row subqueries, category avg comparison, latest order |
+
+---
+
+## 📝 Quick Reference
+
+### Subquery Locations
+
+| Location | Purpose | Example |
+|---|---|---|
+| `WHERE` | Filter rows | `WHERE price > (SELECT AVG(price) FROM products)` |
+| `SELECT` | Value per row | `(SELECT COUNT(*) FROM orders WHERE customer_id = c.customer_id)` |
+| `FROM` | Derived table | `FROM (SELECT city, COUNT(*) FROM customers GROUP BY city) AS t` |
+| `HAVING` | Filter groups | `HAVING COUNT(*) > (SELECT AVG(cnt) FROM (...) t)` |
+
+---
+
+### IN vs EXISTS
+
+| | IN | EXISTS |
+|---|---|---|
+| How it works | Checks value against full list | Checks if any rows returned |
+| Stops early | No — checks all values | Yes — stops at first match |
+| Speed on large data | Slower | Faster |
+| NULL safety | NOT IN has NULL trap | NOT EXISTS is NULL safe |
+| Use when | Small subquery list | Large subquery result |
+
+---
+
+
+
+### Correlated vs Non-Correlated
+
+```sql
+-- Non-correlated — runs ONCE, result reused
+WHERE price > (SELECT AVG(price) FROM products)
+
+-- Correlated — runs ONCE PER ROW, references outer query
+WHERE price > (
+    SELECT AVG(p2.price) FROM products p2
+    WHERE p2.category = p1.category  -- ← references outer p1
+)
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+| Mistake | Fix |
+|---|---|
+| Forgetting parentheses around subquery | Always wrap in `( )` |
+| FROM subquery without alias | Add `AS alias_name` after closing `)` |
+| NOT IN with NULLs in subquery | Add `WHERE col IS NOT NULL` or use `NOT EXISTS` |
+| Correlated subquery on large tables | Rewrite as JOIN + GROUP BY when possible |
+| Subquery returns multiple rows in WHERE = | Use `IN` not `=` when subquery returns multiple rows |
+
