@@ -1,0 +1,48 @@
+# Ep.10 — Advanced SQL — Window Functions
+
+> 📺 Watch this episode: [YouTube Link]
+
+## 📌 What You Will Learn
+
+- What a window function is vs GROUP BY
+- OVER() — the keyword that makes it a window function
+- PARTITION BY — reset the window per group
+- ROW_NUMBER — always unique sequential numbers
+- RANK — gaps after ties (1,2,2,4)
+- DENSE_RANK — no gaps after ties (1,2,2,3)
+- Top N per group pattern using ranking functions
+- LAG — access the previous row's value
+- LEAD — access the next row's value
+- Days between orders, month-over-month growth
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| — | `ep10_window_functions.pptx` | 6-slide deck — concept, ranking, PARTITION BY, LEAD/LAG |
+| 1 | `ep10_window_basics.sql` | OVER, PARTITION BY, running totals, avg comparison |
+| 2 | `ep10_rank_functions.sql` | ROW_NUMBER, RANK, DENSE_RANK, first order per customer, top N |
+| 3 | `ep10_lead_lag.sql` | LAG, LEAD, days between orders, MoM growth, offset + default |
+
+## ⚠️ Common Mistakes
+
+| Mistake | Fix |
+|---|---|
+| Using window function in WHERE | Use a subquery — window functions run after WHERE |
+| Forgetting ORDER BY in ranking | RANK without ORDER BY gives all rows rank 1 |
+| Confusing PARTITION BY with GROUP BY | PARTITION BY keeps all rows — GROUP BY collapses |
+| Expecting no NULLs from LAG/LEAD | First/last rows always return NULL — use default arg |
+
+---
+
+## 🔗 What's Next
+
+In **Ep.11** we cover CASE statements and CTEs:
+- CASE WHEN THEN ELSE — conditional logic in SQL
+- WITH clause — Common Table Expressions
+- Reusable named query blocks
+- Nested CTEs
+
+
