@@ -1,0 +1,98 @@
+Ep.11 — Conditional Logic & CTEs
+
+> 📺 Watch this episode: [YouTube Link]
+
+## 📌 What You Will Learn
+
+- CASE WHEN THEN ELSE — conditional logic inside SQL
+- CASE in SELECT — label and categorise rows
+- CASE in GROUP BY — group by custom buckets
+- CASE in ORDER BY — custom sort order
+- What a CTE is and why it's better than subqueries
+- WITH clause — define a named temporary result
+- Multiple CTEs — chain them with commas
+- CTE + CASE — combine both for clean multi-step queries
+- CTE + Window Functions — rank inside CTE, filter outside
+
+---
+
+## 📂 Files in This Folder
+
+| Order | File | What's Inside |
+|---|---|---|
+| — | `ep11_case_cte.pptx` | 7-slide deck — CASE syntax, examples, CTEs, comparison |
+| 1 | `ep11_case_statement.sql` | CASE basics, GROUP BY, status labels, custom ORDER BY |
+| 2 | `ep11_cte.sql` | Basic CTE, CTE vs subquery, CTE+CASE, multiple CTEs, CTE+window |
+
+---
+
+## 📝 Quick Reference
+
+### CASE Syntax
+
+```sql
+SELECT
+    column,
+    CASE
+        WHEN condition1 THEN 'result1'
+        WHEN condition2 THEN 'result2'
+        ELSE                 'default'
+    END AS alias_name
+FROM table;
+```
+
+### CASE Rules
+
+| Rule | Why |
+|---|---|
+| Evaluates top to bottom | First match wins — order your conditions carefully |
+| Always add ELSE | Without it — unmatched rows return NULL |
+| Always end with END | Required syntax |
+| Give it an alias | Without AS alias — column has no name |
+
+---
+
+### CTE Syntax
+
+```sql
+-- Single CTE
+WITH cte_name AS (
+    SELECT ...
+)
+SELECT ... FROM cte_name;
+
+-- Multiple CTEs
+WITH cte1 AS (
+    SELECT ...
+),
+cte2 AS (
+    SELECT ... FROM cte1   -- can reference previous CTEs
+)
+SELECT ... FROM cte2;
+```
+
+---
+
+### CTE vs Subquery
+
+| | Subquery | CTE |
+|---|---|---|
+| Readability | Nested, harder to follow | Defined up top, easy to read |
+| Reusability | Must repeat if used twice | Write once, use anywhere below |
+| Debugging | Hard to isolate | Test each CTE separately |
+| Performance | Same | Same |
+| Use when | Simple one-off filter | Complex or reused logic |
+
+---
+
+## ⚠️ Common Mistakes
+
+| Mistake | Fix |
+|---|---|
+| Forgetting ELSE | Always add ELSE — otherwise unmatched rows return NULL |
+| Forgetting END | Every CASE must close with END |
+| No alias after END | Always write `END AS column_name` |
+| Comma after last CTE | Only commas BETWEEN CTEs — not after the last one |
+| Using CTE in WHERE | Can't filter by a CASE alias in WHERE — use CTE or subquery |
+
+➡️ [Go to Ep.12 →](../ep12_recursive_queries/)
